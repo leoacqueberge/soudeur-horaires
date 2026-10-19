@@ -55,16 +55,40 @@ body {
 .check {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin: 0;
+  padding: 12px 14px 12px 18px;
+  border: 1.5px solid rgba(55, 50, 40, 0.28);
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 0 rgba(55, 50, 40, 0.04);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.check:has(.check__input:checked) {
+  background: var(--ink);
+  border-color: var(--ink);
+  box-shadow: none;
+}
+
+.check:has(.check__input:checked) .check__label {
+  color: var(--bg);
+}
+
+.check:has(.check__input:focus-visible) {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
 }
 
 .check__label {
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--ink);
 }
@@ -79,11 +103,11 @@ body {
 }
 
 .check__box {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border: 2px solid var(--ink);
-  border-radius: 7px;
-  background: transparent;
+  border-radius: 6px;
+  background: #fff;
   display: grid;
   place-items: center;
   flex-shrink: 0;
@@ -94,30 +118,27 @@ body {
 
 .check__box::after {
   content: "";
-  width: 6px;
-  height: 11px;
-  border: solid var(--bg);
+  width: 5px;
+  height: 10px;
+  border: solid var(--ink);
   border-width: 0 2.5px 2.5px 0;
   transform: rotate(45deg) translate(-1px, -1px) scale(0);
   opacity: 0;
   transition:
     transform 0.15s ease,
-    opacity 0.15s ease;
+    opacity 0.15s ease,
+    border-color 0.15s ease;
 }
 
 .check__input:checked + .check__box {
-  background: var(--ink);
-  border-color: var(--ink);
+  background: var(--bg);
+  border-color: var(--bg);
 }
 
 .check__input:checked + .check__box::after {
   opacity: 1;
+  border-color: var(--ink);
   transform: rotate(45deg) translate(-1px, -1px) scale(1);
-}
-
-.check__input:focus-visible + .check__box {
-  outline: 2px solid var(--ink);
-  outline-offset: 3px;
 }
 
 .hero {
