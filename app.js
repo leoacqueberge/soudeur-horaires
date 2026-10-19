@@ -1,5 +1,5 @@
 /**
- * Horaires Groupe Soudeur — modules Stomp
+ * Horaires Groupe Soudeur
  * Sources: planning Journée normale / Nocturnes
  */
 
@@ -8,30 +8,28 @@ const SCHEDULES = {
     label: "Journée normale",
     hint: "Prolongation possible jusqu’à 20h",
     slots: [
-      { time: "13:00", name: "Stomp", kind: "show" },
-      { time: "13:22:30", name: "Stomp", kind: "show" },
-      { time: "14:30", name: "Stomp", kind: "show" },
-      { time: "14:52:30", name: "Stomp", kind: "show" },
-      { time: "16:00", name: "Stomp", kind: "show" },
-      { time: "16:22:30", name: "Stomp", kind: "show" },
-      { time: "17:30", name: "Stomp", kind: "show" },
-      { time: "17:52:30", name: "Stomp", kind: "show" },
-      { time: "19:15", name: "Défilé des monstres", kind: "special" },
+      { time: "13:00", name: "Soudeur", kind: "show" },
+      { time: "13:22:30", name: "Soudeur", kind: "show" },
+      { time: "14:30", name: "Soudeur", kind: "show" },
+      { time: "14:52:30", name: "Soudeur", kind: "show" },
+      { time: "16:00", name: "Soudeur", kind: "show" },
+      { time: "16:22:30", name: "Soudeur", kind: "show" },
+      { time: "17:30", name: "Soudeur", kind: "show" },
+      { time: "17:52:30", name: "Soudeur", kind: "show" },
     ],
   },
   nocturne: {
     label: "Journée nocturne",
     hint: "Dates : 10, 16, 17, 21–24, 28–31 oct. & 7 nov.",
     slots: [
-      { time: "12:00", name: "Stomp", kind: "show" },
-      { time: "12:22:30", name: "Stomp", kind: "show" },
-      { time: "13:30", name: "Stomp", kind: "show" },
-      { time: "13:52:30", name: "Stomp", kind: "show" },
-      { time: "15:00", name: "Stomp", kind: "show" },
-      { time: "15:22:30", name: "Stomp", kind: "show" },
-      { time: "16:30", name: "Stomp", kind: "show" },
-      { time: "16:52:30", name: "Stomp", kind: "show" },
-      { time: "17:30", name: "Défilé des monstres", kind: "special" },
+      { time: "12:00", name: "Soudeur", kind: "show" },
+      { time: "12:22:30", name: "Soudeur", kind: "show" },
+      { time: "13:30", name: "Soudeur", kind: "show" },
+      { time: "13:52:30", name: "Soudeur", kind: "show" },
+      { time: "15:00", name: "Soudeur", kind: "show" },
+      { time: "15:22:30", name: "Soudeur", kind: "show" },
+      { time: "16:30", name: "Soudeur", kind: "show" },
+      { time: "16:52:30", name: "Soudeur", kind: "show" },
     ],
   },
 };
@@ -95,7 +93,6 @@ function render() {
     const isDone = nextIdx === -1 || i < nextIdx;
 
     li.className = "slot";
-    if (slot.kind === "special") li.classList.add("slot--special");
     if (isNext) li.classList.add("slot--next");
     if (isDone && !isNext) li.classList.add("slot--done");
     li.style.animationDelay = `${0.04 * i}s`;
@@ -104,7 +101,7 @@ function render() {
       <p class="slot__time">${formatDisplayTime(slot.time)}</p>
       <div>
         <p class="slot__name">${slot.name}</p>
-        <p class="slot__tag">${slot.kind === "special" ? "Événement" : "Module"}</p>
+        <p class="slot__tag">Module</p>
       </div>
       <span class="slot__dot" aria-hidden="true"></span>
     `;
@@ -116,10 +113,7 @@ function render() {
     const next = data.slots[nextIdx];
     nowCard.hidden = false;
     nowTime.textContent = formatDisplayTime(next.time);
-    nowMeta.textContent =
-      next.kind === "special"
-        ? next.name
-        : `${next.name} · environ 7 min 30`;
+    nowMeta.textContent = `${next.name} · environ 7 min 30`;
   } else {
     nowCard.hidden = true;
   }
