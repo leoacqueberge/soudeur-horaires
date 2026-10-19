@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1f2a1c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Soudeur — Horaires Stomp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=TikTok+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="atmosphere" aria-hidden="true"></div>
+
+    <main class="app">
+      <header class="brand">
+        <p class="brand__mark">Groupe Soudeur</p>
+        <h1 class="brand__title">Stomp</h1>
+        <p class="brand__sub" id="schedule-label">Journée normale</p>
+      </header>
+
+      <section class="toggle-block" aria-label="Type de journée">
+        <span class="toggle-block__label" id="label-sans">Sans nocturne</span>
+        <button
+          type="button"
+          class="toggle"
+          id="nocturne-toggle"
+          role="switch"
+          aria-checked="false"
+          aria-labelledby="label-sans label-avec"
+        >
+          <span class="toggle__thumb"></span>
+        </button>
+        <span class="toggle-block__label" id="label-avec">Avec nocturne</span>
+      </section>
+
+      <p class="hint" id="hint"></p>
+
+      <section class="now-card" id="now-card" hidden>
+        <p class="now-card__eyebrow">Prochain</p>
+        <p class="now-card__time" id="now-time"></p>
+        <p class="now-card__meta" id="now-meta"></p>
+      </section>
+
+      <section aria-labelledby="list-heading">
+        <h2 class="section-title" id="list-heading">Tes créneaux</h2>
+        <ol class="timeline" id="timeline"></ol>
+      </section>
+
+      <footer class="foot">
+        <p>Modules ≈ 7 min 30 · Défilé 15 min après fermeture</p>
+      </footer>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
