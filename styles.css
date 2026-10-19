@@ -39,25 +39,13 @@ body {
   align-items: stretch;
 }
 
-.top {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  padding-top: 8px;
-}
-
-.top__mark {
-  color: var(--ink);
-  flex-shrink: 0;
-}
-
 /* Walky settings row: card + title + toggle */
 .setting-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin: 0 0 32px;
+  margin: 8px 0 32px;
   padding: 14px 20px;
   border-radius: 28px;
   background: rgba(55, 50, 40, 0.06);
