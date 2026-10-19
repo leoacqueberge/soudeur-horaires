@@ -35,7 +35,7 @@ const SCHEDULES = {
 
 const STORAGE_KEY = "soudeur-nocturne";
 
-const toggle = document.getElementById("nocturne-toggle");
+const nocturneInput = document.getElementById("nocturne-input");
 const heroTime = document.getElementById("hero-time");
 const heroLabel = document.getElementById("hero-label");
 const statValue = document.getElementById("stat-value");
@@ -61,12 +61,11 @@ function getNowMinutes() {
 }
 
 function isNocturne() {
-  return toggle.getAttribute("aria-checked") === "true";
+  return nocturneInput.checked;
 }
 
 function setMode(nocturne) {
-  toggle.setAttribute("aria-checked", String(nocturne));
-  toggle.textContent = nocturne ? "Nocturne ✓" : "Nocturne";
+  nocturneInput.checked = nocturne;
   localStorage.setItem(STORAGE_KEY, nocturne ? "1" : "0");
   render();
 }
@@ -117,8 +116,8 @@ function render() {
   });
 }
 
-toggle.addEventListener("click", () => {
-  setMode(!isNocturne());
+nocturneInput.addEventListener("change", () => {
+  setMode(nocturneInput.checked);
 });
 
 setMode(localStorage.getItem(STORAGE_KEY) === "1");
