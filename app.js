@@ -1,6 +1,5 @@
 /**
- * Horaires Groupe Soudeur
- * Sources: planning Journée normale / Nocturnes
+ * Horaires Groupe Soudeur — UI style Walky (Sable)
  */
 
 const SCHEDULES = {
@@ -8,28 +7,28 @@ const SCHEDULES = {
     label: "Journée normale",
     hint: "Prolongation possible jusqu’à 20h",
     slots: [
-      { time: "13:00", name: "Soudeur", kind: "show" },
-      { time: "13:22:30", name: "Soudeur", kind: "show" },
-      { time: "14:30", name: "Soudeur", kind: "show" },
-      { time: "14:52:30", name: "Soudeur", kind: "show" },
-      { time: "16:00", name: "Soudeur", kind: "show" },
-      { time: "16:22:30", name: "Soudeur", kind: "show" },
-      { time: "17:30", name: "Soudeur", kind: "show" },
-      { time: "17:52:30", name: "Soudeur", kind: "show" },
+      { time: "13:00" },
+      { time: "13:22:30" },
+      { time: "14:30" },
+      { time: "14:52:30" },
+      { time: "16:00" },
+      { time: "16:22:30" },
+      { time: "17:30" },
+      { time: "17:52:30" },
     ],
   },
   nocturne: {
     label: "Journée nocturne",
-    hint: "Dates : 10, 16, 17, 21–24, 28–31 oct. & 7 nov.",
+    hint: "10, 16, 17, 21–24, 28–31 oct. & 7 nov.",
     slots: [
-      { time: "12:00", name: "Soudeur", kind: "show" },
-      { time: "12:22:30", name: "Soudeur", kind: "show" },
-      { time: "13:30", name: "Soudeur", kind: "show" },
-      { time: "13:52:30", name: "Soudeur", kind: "show" },
-      { time: "15:00", name: "Soudeur", kind: "show" },
-      { time: "15:22:30", name: "Soudeur", kind: "show" },
-      { time: "16:30", name: "Soudeur", kind: "show" },
-      { time: "16:52:30", name: "Soudeur", kind: "show" },
+      { time: "12:00" },
+      { time: "12:22:30" },
+      { time: "13:30" },
+      { time: "13:52:30" },
+      { time: "15:00" },
+      { time: "15:22:30" },
+      { time: "16:30" },
+      { time: "16:52:30" },
     ],
   },
 };
@@ -37,13 +36,13 @@ const SCHEDULES = {
 const STORAGE_KEY = "soudeur-nocturne";
 
 const toggle = document.getElementById("nocturne-toggle");
-const toggleBlock = document.querySelector(".toggle-block");
-const labelEl = document.getElementById("schedule-label");
+const heroTime = document.getElementById("hero-time");
+const heroLabel = document.getElementById("hero-label");
+const statValue = document.getElementById("stat-value");
+const statLabel = document.getElementById("stat-label");
+const scheduleLabel = document.getElementById("schedule-label");
 const hintEl = document.getElementById("hint");
 const timeline = document.getElementById("timeline");
-const nowCard = document.getElementById("now-card");
-const nowTime = document.getElementById("now-time");
-const nowMeta = document.getElementById("now-meta");
 
 function parseTimeToMinutes(time) {
   const [h, m, s = "0"] = time.split(":");
@@ -61,13 +60,13 @@ function getNowMinutes() {
   return d.getHours() * 60 + d.getMinutes() + d.getSeconds() / 60;
 }
 
-function currentMode() {
-  return toggle.getAttribute("aria-checked") === "true" ? "nocturne" : "normal";
+function isNocturne() {
+  return toggle.getAttribute("aria-checked") === "true";
 }
 
 function setMode(nocturne) {
   toggle.setAttribute("aria-checked", String(nocturne));
-  toggleBlock.classList.toggle("is-on", nocturne);
+  toggle.textContent = nocturne ? "Nocturne ✓" : "Nocturne";
   localStorage.setItem(STORAGE_KEY, nocturne ? "1" : "0");
   render();
 }
@@ -77,13 +76,25 @@ function findNextIndex(slots, now) {
 }
 
 function render() {
-  const mode = currentMode();
-  const data = SCHEDULES[mode];
+  const data = SCHEDULES[isNocturne() ? "nocturne" : "normal"];
   const now = getNowMinutes();
   const nextIdx = findNextIndex(data.slots, now);
+  const remaining = nextIdx === -1 ? 0 : data.slots.length - nextIdx;
 
-  labelEl.textContent = data.label;
+  scheduleLabel.textContent = data.label;
   hintEl.textContent = data.hint;
+
+  if (nextIdx >= 0) {
+    heroTime.textContent = formatDisplayTime(data.slots[nextIdx].time);
+    heroLabel.textContent = "Prochain,";
+  } else {
+    heroTime.textContent = "Fin";
+    heroLabel.textContent = "Plus de créneau,";
+  }
+
+  statValue.textContent = String(remaining);
+  statLabel.textContent =
+    remaining <= 1 ? "créneau restant" : "créneaux restants";
 
   timeline.replaceChildren();
 
@@ -92,38 +103,23 @@ function render() {
     const isNext = i === nextIdx;
     const isDone = nextIdx === -1 || i < nextIdx;
 
-    li.className = "slot";
-    if (isNext) li.classList.add("slot--next");
-    if (isDone && !isNext) li.classList.add("slot--done");
-    li.style.animationDelay = `${0.04 * i}s`;
+    li.className = "show";
+    if (isNext) li.classList.add("show--next");
+    if (isDone && !isNext) li.classList.add("show--done");
+    li.style.animationDelay = `${0.03 * i}s`;
 
     li.innerHTML = `
-      <p class="slot__time">${formatDisplayTime(slot.time)}</p>
-      <div>
-        <p class="slot__name">${slot.name}</p>
-        <p class="slot__tag">Module</p>
-      </div>
-      <span class="slot__dot" aria-hidden="true"></span>
+      <span class="show__time">${formatDisplayTime(slot.time)}</span>
+      <span class="show__name">Soudeur</span>
     `;
 
     timeline.appendChild(li);
   });
-
-  if (nextIdx >= 0) {
-    const next = data.slots[nextIdx];
-    nowCard.hidden = false;
-    nowTime.textContent = formatDisplayTime(next.time);
-    nowMeta.textContent = `${next.name} · environ 7 min 30`;
-  } else {
-    nowCard.hidden = true;
-  }
 }
 
 toggle.addEventListener("click", () => {
-  setMode(toggle.getAttribute("aria-checked") !== "true");
+  setMode(!isNocturne());
 });
 
-const saved = localStorage.getItem(STORAGE_KEY) === "1";
-setMode(saved);
-
+setMode(localStorage.getItem(STORAGE_KEY) === "1");
 setInterval(render, 30_000);
