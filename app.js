@@ -38,6 +38,7 @@ const STORAGE_KEY = "soudeur-nocturne";
 const nocturneInput = document.getElementById("nocturne-input");
 const heroTime = document.getElementById("hero-time");
 const heroLabel = document.getElementById("hero-label");
+const heroCountdown = document.getElementById("hero-countdown");
 const statValue = document.getElementById("stat-value");
 const statLabel = document.getElementById("stat-label");
 const scheduleLabel = document.getElementById("schedule-label");
@@ -53,6 +54,13 @@ function formatDisplayTime(time) {
   const [h, m, s] = time.split(":");
   if (s) return `${h}h${m} ${Number(s)}s`;
   return `${h}h${m}`;
+}
+
+function formatCountdown(minutesUntil) {
+  if (minutesUntil <= 0) return "c’est maintenant";
+  const mins = Math.floor(minutesUntil);
+  if (mins < 1) return "dans moins d’1 min";
+  return mins === 1 ? "dans 1 min" : `dans ${mins} min`;
 }
 
 function getNowMinutes() {
@@ -84,11 +92,17 @@ function render() {
   hintEl.textContent = data.hint;
 
   if (nextIdx >= 0) {
+    const minutesUntil =
+      parseTimeToMinutes(data.slots[nextIdx].time) - now;
     heroTime.textContent = formatDisplayTime(data.slots[nextIdx].time);
     heroLabel.textContent = "Prochain,";
+    heroCountdown.hidden = false;
+    heroCountdown.textContent = formatCountdown(minutesUntil);
   } else {
     heroTime.textContent = "Fin";
     heroLabel.textContent = "Plus de créneau,";
+    heroCountdown.hidden = true;
+    heroCountdown.textContent = "";
   }
 
   statValue.textContent = String(remaining);
@@ -121,4 +135,4 @@ nocturneInput.addEventListener("change", () => {
 });
 
 setMode(localStorage.getItem(STORAGE_KEY) === "1");
-setInterval(render, 30_000);
+setInterval(render, 1_000);

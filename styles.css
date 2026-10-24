@@ -129,6 +129,19 @@ body {
   letter-spacing: -0.02em;
 }
 
+.hero__countdown {
+  margin: 10px 0 0;
+  font-size: clamp(1.25rem, 5.5vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.hero__countdown[hidden] {
+  display: none;
+}
+
 .stat {
   margin-bottom: 32px;
 }
