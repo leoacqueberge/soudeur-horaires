@@ -45,6 +45,9 @@ const scheduleLabel = document.getElementById("schedule-label");
 const hintEl = document.getElementById("hint");
 const timeline = document.getElementById("timeline");
 
+/** Last painted schedule key + next index — avoids rebuilding the list every tick. */
+let paintedKey = null;
+
 function parseTimeToMinutes(time) {
   const [h, m, s = "0"] = time.split(":");
   return Number(h) * 60 + Number(m) + Number(s) / 60;
@@ -75,6 +78,7 @@ function isNocturne() {
 function setMode(nocturne) {
   nocturneInput.checked = nocturne;
   localStorage.setItem(STORAGE_KEY, nocturne ? "1" : "0");
+  paintedKey = null;
   render();
 }
 
@@ -82,11 +86,35 @@ function findNextIndex(slots, now) {
   return slots.findIndex((slot) => parseTimeToMinutes(slot.time) > now - 0.01);
 }
 
+function paintTimeline(slots, nextIdx) {
+  timeline.replaceChildren();
+
+  slots.forEach((slot, i) => {
+    const li = document.createElement("li");
+    const isNext = i === nextIdx;
+    const isDone = nextIdx === -1 || i < nextIdx;
+
+    li.className = "show";
+    if (isNext) li.classList.add("show--next");
+    if (isDone && !isNext) li.classList.add("show--done");
+    li.style.animationDelay = `${0.03 * i}s`;
+
+    li.innerHTML = `
+      <span class="show__time">${formatDisplayTime(slot.time)}</span>
+      <span class="show__name">Soudeur</span>
+    `;
+
+    timeline.appendChild(li);
+  });
+}
+
 function render() {
-  const data = SCHEDULES[isNocturne() ? "nocturne" : "normal"];
+  const mode = isNocturne() ? "nocturne" : "normal";
+  const data = SCHEDULES[mode];
   const now = getNowMinutes();
   const nextIdx = findNextIndex(data.slots, now);
   const remaining = nextIdx === -1 ? 0 : data.slots.length - nextIdx;
+  const key = `${mode}:${nextIdx}`;
 
   scheduleLabel.textContent = data.label;
   hintEl.textContent = data.hint;
@@ -109,25 +137,10 @@ function render() {
   statLabel.textContent =
     remaining <= 1 ? "créneau restant" : "créneaux restants";
 
-  timeline.replaceChildren();
-
-  data.slots.forEach((slot, i) => {
-    const li = document.createElement("li");
-    const isNext = i === nextIdx;
-    const isDone = nextIdx === -1 || i < nextIdx;
-
-    li.className = "show";
-    if (isNext) li.classList.add("show--next");
-    if (isDone && !isNext) li.classList.add("show--done");
-    li.style.animationDelay = `${0.03 * i}s`;
-
-    li.innerHTML = `
-      <span class="show__time">${formatDisplayTime(slot.time)}</span>
-      <span class="show__name">Soudeur</span>
-    `;
-
-    timeline.appendChild(li);
-  });
+  if (key !== paintedKey) {
+    paintedKey = key;
+    paintTimeline(data.slots, nextIdx);
+  }
 }
 
 nocturneInput.addEventListener("change", () => {
