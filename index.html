@@ -14,20 +14,21 @@
   </head>
   <body>
     <main class="app">
-      <label class="nocturne" id="nocturne-toggle" title="Journée nocturne">
-        <input
-          type="checkbox"
-          id="nocturne-input"
-          class="nocturne__input"
-        />
-        <span class="nocturne__pill">
-          <span class="nocturne__dot" aria-hidden="true"></span>
-          <span class="nocturne__label">Nocturne</span>
-        </span>
-      </label>
-
       <section class="hero" aria-live="polite">
-        <p class="hero__time" id="hero-time">—</p>
+        <div class="hero__top">
+          <p class="hero__time" id="hero-time">—</p>
+          <label class="nocturne" id="nocturne-toggle" title="Journée nocturne">
+            <input
+              type="checkbox"
+              id="nocturne-input"
+              class="nocturne__input"
+            />
+            <span class="nocturne__pill">
+              <span class="nocturne__dot" aria-hidden="true"></span>
+              <span class="nocturne__label">Nocturne</span>
+            </span>
+          </label>
+        </div>
         <p class="hero__label" id="hero-label">Prochain,</p>
         <p class="hero__countdown" id="hero-countdown" hidden></p>
       </section>
@@ -35,11 +36,6 @@
       <section class="stat" aria-live="polite">
         <p class="stat__value" id="stat-value">0</p>
         <p class="stat__label" id="stat-label">créneau restant</p>
-      </section>
-
-      <section class="meta">
-        <p class="meta__day" id="schedule-label">Journée normale</p>
-        <p class="meta__hint" id="hint"></p>
       </section>
 
       <section class="shows" aria-labelledby="shows-heading">
