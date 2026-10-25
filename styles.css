@@ -39,29 +39,17 @@ body {
   align-items: stretch;
 }
 
-/* Walky settings row: card + title + toggle */
-.setting-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 8px 0 32px;
-  padding: 14px 20px;
-  border-radius: 28px;
-  background: rgba(55, 50, 40, 0.06);
+/* Compact nocturne chip — top-right, not full-width */
+.nocturne {
+  align-self: flex-end;
+  display: inline-flex;
+  margin: 4px 0 20px;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.setting-card__title {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-
-.setting-card__input {
+.nocturne__input {
   position: absolute;
   opacity: 0;
   width: 1px;
@@ -70,39 +58,47 @@ body {
   pointer-events: none;
 }
 
-.setting-card__switch {
-  position: relative;
-  width: 51px;
-  height: 31px;
+.nocturne__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 11px 6px 8px;
   border-radius: 999px;
-  background: rgba(55, 50, 40, 0.18);
-  flex-shrink: 0;
-  transition: background 0.22s ease;
+  background: rgba(55, 50, 40, 0.06);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
-.setting-card__thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 27px;
-  height: 27px;
+.nocturne__dot {
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
-  background: #fff;
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.18),
-    0 1px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+  background: rgba(55, 50, 40, 0.22);
+  transition: background 0.2s ease;
 }
 
-.setting-card__input:checked + .setting-card__switch {
+.nocturne__label {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--muted);
+  transition: color 0.2s ease;
+}
+
+.nocturne__input:checked + .nocturne__pill {
   background: var(--ink);
 }
 
-.setting-card__input:checked + .setting-card__switch .setting-card__thumb {
-  transform: translateX(20px);
+.nocturne__input:checked + .nocturne__pill .nocturne__dot {
+  background: #fffcf0;
 }
 
-.setting-card:has(.setting-card__input:focus-visible) {
+.nocturne__input:checked + .nocturne__pill .nocturne__label {
+  color: #fffcf0;
+}
+
+.nocturne:has(.nocturne__input:focus-visible) .nocturne__pill {
   outline: 2px solid var(--ink);
   outline-offset: 3px;
 }
