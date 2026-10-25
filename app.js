@@ -41,8 +41,6 @@ const heroLabel = document.getElementById("hero-label");
 const heroCountdown = document.getElementById("hero-countdown");
 const statValue = document.getElementById("stat-value");
 const statLabel = document.getElementById("stat-label");
-const scheduleLabel = document.getElementById("schedule-label");
-const hintEl = document.getElementById("hint");
 const timeline = document.getElementById("timeline");
 
 /** Last painted schedule key + next index — avoids rebuilding the list every tick. */
@@ -115,9 +113,6 @@ function render() {
   const nextIdx = findNextIndex(data.slots, now);
   const remaining = nextIdx === -1 ? 0 : data.slots.length - nextIdx;
   const key = `${mode}:${nextIdx}`;
-
-  scheduleLabel.textContent = data.label;
-  hintEl.textContent = data.hint;
 
   if (nextIdx >= 0) {
     const minutesUntil =

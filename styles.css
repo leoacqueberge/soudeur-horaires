@@ -39,11 +39,11 @@ body {
   align-items: stretch;
 }
 
-/* Compact nocturne chip — top-right, not full-width */
+/* Compact nocturne chip — sits on the hero time row */
 .nocturne {
-  align-self: flex-end;
   display: inline-flex;
-  margin: 4px 0 20px;
+  flex-shrink: 0;
+  margin: 0;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -104,7 +104,15 @@ body {
 }
 
 .hero {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
+}
+
+.hero__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: -6px;
 }
 
 .hero__time {
@@ -114,7 +122,6 @@ body {
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
   line-height: 0.95;
-  margin-bottom: -6px;
 }
 
 .hero__label {
@@ -139,7 +146,7 @@ body {
 }
 
 .stat {
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
 .stat__value {
@@ -156,25 +163,6 @@ body {
   font-size: 15px;
   font-weight: 500;
   color: var(--ink);
-}
-
-.meta {
-  margin-bottom: 36px;
-}
-
-.meta__day {
-  margin: 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--ink);
-}
-
-.meta__hint {
-  margin: 4px 0 0;
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--muted);
-  min-height: 1.2em;
 }
 
 .shows__heading {
